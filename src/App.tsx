@@ -188,21 +188,24 @@ function App() {
                 }`}
               >
                 {messages[index - 1]?.user_id === message.user_id ? (
-                  <div className="size-10" />
+                  <div className="size-10 flex-shrink-0" />
                 ) : (
-                  <a
-                    href={`https://github.com/${message.user_name}`}
-                    target="_blank"
-                    className="cursor-pointer pointer-events-auto size-10"
-                  >
-                    <img
-                      src={
-                        message.user_avatar || "https://via.placeholder.com/40"
-                      }
-                      alt="avatar"
-                      className="w-10 h-10 rounded-full select-none"
-                    />
-                  </a>
+                  <div className="flex-shrink-0">
+                    <a
+                      href={`https://github.com/${message.user_name}`}
+                      target="_blank"
+                      className="cursor-pointer pointer-events-auto size-10"
+                    >
+                      <img
+                        src={
+                          message.user_avatar ||
+                          "https://via.placeholder.com/40"
+                        }
+                        alt="avatar"
+                        className="w-10 h-10 rounded-full select-none"
+                      />
+                    </a>
+                  </div>
                 )}
                 <div
                   className={`flex flex-col ${
@@ -230,7 +233,7 @@ function App() {
                     )}
                   </div>
                   <div
-                    className={`mt-1 px-4 py-2 rounded-lg ${
+                    className={`mt-1 px-4 py-2 rounded-lg break-words ${
                       session?.user.id === message.user_id
                         ? "bg-indigo-600 text-white"
                         : "bg-gray-100"
