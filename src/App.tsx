@@ -3,6 +3,7 @@ import { MessageCircle, Volume2, VolumeX, Send, Github } from "lucide-react";
 import { supabase } from "./lib/supabase";
 import toast, { Toaster } from "react-hot-toast";
 import { type Session } from "@supabase/supabase-js";
+import Snd from "snd-lib";
 
 const TEMPLATE_MESSAGES = [
   "Hello! How are you?",
@@ -21,15 +22,19 @@ interface Message {
   user_name: string | null;
 }
 
+const snd = new Snd();
+
 function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [isSpeechEnabled, setIsSpeechEnabled] = useState(false);
+  const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const synth = window.speechSynthesis;
 
   useEffect(() => {
+    snd.load(Snd.KITS.SND01);
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
     });
@@ -71,19 +76,9 @@ function App() {
         (payload) => {
           const newMessage = payload.new as Message;
           setMessages((prev) => [...prev, newMessage]);
-          if (isSpeechEnabled) {
-            const content = newMessage.content.replace(
-              /https?:\/\/[\w/:%#$&?()~.=+-]+/g,
-              "url"
-            );
-            const utterance = new SpeechSynthesisUtterance(content);
-            const voices = synth.getVoices();
-
-            // Set voice priority
-            const aaron = voices.find((voice) => voice.name === "Aaron");
-            const arthur = voices.find((voice) => voice.name === "Arthur");
-            utterance.voice = aaron || arthur || voices[0];
-            synth.speak(utterance);
+          if (isNotificationEnabled) {
+            console.log(newMessage.content);
+            snd.play(Snd.SOUNDS.NOTIFICATION);
           }
         }
       )
@@ -92,7 +87,7 @@ function App() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [isSpeechEnabled, synth]);
+  }, [isNotificationEnabled, synth]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -146,10 +141,10 @@ function App() {
             </div>
             <div className="flex items-center space-x-4">
               <button
-                onClick={() => setIsSpeechEnabled(!isSpeechEnabled)}
+                onClick={() => setIsNotificationEnabled(!isNotificationEnabled)}
                 className="text-white hover:text-indigo-200"
               >
-                {isSpeechEnabled ? <Volume2 /> : <VolumeX />}
+                {isNotificationEnabled ? <Volume2 /> : <VolumeX />}
               </button>
               {session ? (
                 <button
