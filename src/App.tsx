@@ -292,8 +292,12 @@ function App() {
                     }`}
                   >
                     <div
-                      className={`flex flex-row ${
-                        message.user_name !== "minagishl" && "flex-row-reverse"
+                      className={`flex ${
+                        message.user_name === "minagishl"
+                          ? message.user_id === session?.user.id
+                            ? "flex-row"
+                            : "flex-row-reverse"
+                          : ""
                       }`}
                     >
                       {messages[index - 1]?.user_id !== message.user_id && (
@@ -302,7 +306,15 @@ function App() {
                             {message.user_name}
                           </span>
                           {message.user_name === "minagishl" && (
-                            <span className="text-xs bg-gray-100 rounded-full ml-1 my-auto px-1.5 py-0.5 text-center flex items-center">
+                            <span
+                              className={`text-xs bg-gray-100 rounded-full my-auto px-1.5 py-0.5 text-center flex items-center ${
+                                message.user_name === "minagishl"
+                                  ? message.user_id === session?.user.id
+                                    ? "ml-1"
+                                    : "mr-1"
+                                  : ""
+                              }`}
+                            >
                               Admin
                             </span>
                           )}
