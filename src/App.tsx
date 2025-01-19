@@ -72,6 +72,12 @@ function App() {
           setMessages((prev) => [...prev, newMessage]);
           if (isSpeechEnabled) {
             const utterance = new SpeechSynthesisUtterance(newMessage.content);
+            const voices = synth.getVoices();
+
+            // Set voice priority
+            const aaron = voices.find((voice) => voice.name === "Aaron");
+            const arthur = voices.find((voice) => voice.name === "Arthur");
+            utterance.voice = aaron || arthur || voices[0];
             synth.speak(utterance);
           }
         }
