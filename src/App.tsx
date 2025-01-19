@@ -94,7 +94,6 @@ function App() {
           const newMessage = payload.new as Message;
           setMessages((prev) => [...prev, newMessage]);
           if (isNotificationEnabled) {
-            console.log(newMessage.content);
             snd.play(Snd.SOUNDS.NOTIFICATION);
           }
         }
