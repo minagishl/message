@@ -240,7 +240,7 @@ function App() {
                             {message.user_name}
                           </span>
                           {message.user_name === "minagishl" && (
-                            <span className="text-xs bg-gray-100 rounded-full mx-1 my-auto px-1.5 py-0.5 text-center flex items-center">
+                            <span className="text-xs bg-gray-100 rounded-full ml-1 my-auto px-1.5 py-0.5 text-center flex items-center">
                               Admin
                             </span>
                           )}
