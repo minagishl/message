@@ -158,7 +158,7 @@ function App() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 w-full max-w-lg">
+          <div className="flex-1 overflow-y-auto p-4 w-full max-w-xl">
             {messages.map((message) => (
               <div
                 key={message.id}
