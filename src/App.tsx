@@ -249,6 +249,11 @@ function App() {
                       className={`mt-1 px-4 py-2 rounded-lg break-words max-w-[calc(100%-(2.5rem*2)-1.5rem)] ${
                         session?.user.id === message.user_id
                           ? "bg-indigo-600 text-white"
+                          : message.content.includes("@everyone") ||
+                            message.content.includes(
+                              `@${session?.user.user_metadata.user_name}`
+                            )
+                          ? "bg-yellow-100 border-2 py-1.5 border-yellow-400"
                           : "bg-gray-100"
                       }`}
                     >
