@@ -177,7 +177,7 @@ function App() {
 
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 1000);
   };
 
   return (
@@ -346,18 +346,23 @@ function App() {
 
           {/* Template Messages */}
           {session && (
-            <div className="p-4 border-t border-gray-200">
-              <div className="flex flex-wrap gap-2">
+            <div
+              className="py-4 border-t border-gray-200 overflow-x-scroll relative flex flex-row items-center"
+              id="template"
+            >
+              <div className="p-2" />
+              <div className="flex gap-2 whitespace-nowrap">
                 {TEMPLATE_MESSAGES.map((template, index) => (
                   <button
                     key={index}
                     onClick={() => setNewMessage(template)}
-                    className="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-sm"
+                    className="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full text-sm flex-shrink-0"
                   >
                     {template}
                   </button>
                 ))}
               </div>
+              <div className="p-2" />
             </div>
           )}
 

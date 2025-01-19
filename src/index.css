@@ -2,13 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-#messages {
+#messages,
+#template {
   overflow: scroll;
   -ms-overflow-style: none; /* IE, Edge */
   scrollbar-width: none; /* Firefox */
 }
 
-#messages::-webkit-scrollbar {
+#messages::-webkit-scrollbar,
+#template::-webkit-scrollbar {
   /* Support for Chrome, Safari, and Opera */
   display: none;
 }
