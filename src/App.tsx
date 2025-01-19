@@ -71,7 +71,11 @@ function App() {
           const newMessage = payload.new as Message;
           setMessages((prev) => [...prev, newMessage]);
           if (isSpeechEnabled) {
-            const utterance = new SpeechSynthesisUtterance(newMessage.content);
+            const content = newMessage.content.replace(
+              /https?:\/\/[\w/:%#$&?()~.=+-]+/g,
+              "url"
+            );
+            const utterance = new SpeechSynthesisUtterance(content);
             const voices = synth.getVoices();
 
             // Set voice priority
