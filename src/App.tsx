@@ -406,18 +406,22 @@ function App() {
           </div>
 
           {/* Typing Users */}
-          {Object.keys(typingUsers).length > 0 && (
-            <div className="px-4 pb-2 text-sm text-gray-500 italic">
-              {Object.values(typingUsers)
-                .map((u) => u.user_name)
-                .filter(
-                  (name) => name !== session?.user.user_metadata.user_name
-                )
-                .join(", ")}
-              {Object.keys(typingUsers).length > 1 ? " are " : " is "}
-              typing...
+          <div className="relative flex items-center justify-center">
+            <div className="px-4 pb-2 text-sm text-gray-500 italic absolute bottom-0 left-0 bg-white/80 w-full">
+              {Object.keys(typingUsers).length > 0 && (
+                <>
+                  {Object.values(typingUsers)
+                    .map((u) => u.user_name)
+                    .filter(
+                      (name) => name !== session?.user.user_metadata.user_name
+                    )
+                    .join(", ")}
+                  {Object.keys(typingUsers).length > 1 ? " are " : " is "}
+                  typing...
+                </>
+              )}
             </div>
-          )}
+          </div>
 
           {/* Template Messages */}
           {session && (
