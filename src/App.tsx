@@ -159,19 +159,29 @@ function App() {
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 w-full max-w-xl">
-            {messages.map((message) => (
+            {messages.map((message, index) => (
               <div
                 key={message.id}
                 className={`flex items-start space-x-3 mb-4 ${
                   session?.user.id === message.user_id
                     ? "flex-row-reverse space-x-reverse"
                     : ""
+                } ${
+                  messages[index + 1]?.user_id === message.user_id
+                    ? "mb-1"
+                    : "mb-4"
                 }`}
               >
                 <img
                   src={message.user_avatar || "https://via.placeholder.com/40"}
                   alt="avatar"
                   className="w-10 h-10 rounded-full select-none pointer-events-none"
+                  style={{
+                    opacity:
+                      messages[index - 1]?.user_id === message.user_id
+                        ? "0"
+                        : "1",
+                  }}
                 />
                 <div
                   className={`flex flex-col ${
@@ -183,13 +193,17 @@ function App() {
                       message.user_name !== "minagishl" && "flex-row-reverse"
                     }`}
                   >
-                    <span className="text-sm text-gray-500">
-                      {message.user_name}
-                    </span>
-                    {message.user_name === "minagishl" && (
-                      <span className="text-xs bg-gray-100 rounded-full mx-1 my-auto px-1.5 py-0.5 text-center flex items-center">
-                        Admin
-                      </span>
+                    {messages[index - 1]?.user_id !== message.user_id && (
+                      <>
+                        <span className="text-sm text-gray-500">
+                          {message.user_name}
+                        </span>
+                        {message.user_name === "minagishl" && (
+                          <span className="text-xs bg-gray-100 rounded-full mx-1 my-auto px-1.5 py-0.5 text-center flex items-center">
+                            Admin
+                          </span>
+                        )}
+                      </>
                     )}
                   </div>
                   <div
