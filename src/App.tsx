@@ -62,6 +62,12 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (messagesEndRef.current && !isLoading) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, isLoading]);
+
+  useEffect(() => {
     const fetchMessages = async () => {
       const { data, error } = await supabase
         .from("messages")
@@ -75,8 +81,6 @@ function App() {
       }
 
       setMessages(data.reverse() || []);
-
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
     fetchMessages();
@@ -133,10 +137,6 @@ function App() {
     }
 
     setNewMessage("");
-
-    setTimeout(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 300);
   };
 
   const fetchMessages = async (offset = 0) => {
@@ -176,7 +176,9 @@ function App() {
       }
     }
 
-    setIsLoading(false);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   };
 
   return (
