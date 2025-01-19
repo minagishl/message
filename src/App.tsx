@@ -129,7 +129,7 @@ function App() {
   return (
     <div className="h-screen bg-gray-100 flex flex-col">
       <Toaster />
-      <div className="max-w-xl w-full mx-auto p-4 flex-1 flex flex-col">
+      <div className="max-w-xl w-full mx-auto sm:p-4 flex-1 flex flex-col">
         <div className="bg-white rounded-lg shadow-lg overflow-hidden flex-1 flex flex-col w-full">
           {/* Header */}
           <div className="bg-indigo-600 p-4 flex justify-between items-center w-full">
