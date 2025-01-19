@@ -130,7 +130,7 @@ function App() {
     <div className="h-screen bg-gray-100 flex flex-col">
       <Toaster />
       <div className="max-w-xl w-full mx-auto max-h-screen sm:p-4 flex-1 flex flex-col">
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden flex-1 flex flex-col w-full">
+        <div className="bg-white sm:rounded-lg shadow-lg overflow-hidden flex-1 flex flex-col w-full">
           {/* Header */}
           <div className="bg-indigo-600 p-4 flex justify-between items-center w-full">
             <div className="flex items-center space-x-2">
