@@ -50,7 +50,8 @@ function App() {
       const { data, error } = await supabase
         .from("messages")
         .select("*")
-        .order("created_at", { ascending: true });
+        .order("created_at", { ascending: true })
+        .limit(50);
 
       if (error) {
         toast.error("Failed to fetch messages");
