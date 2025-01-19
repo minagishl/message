@@ -22,6 +22,11 @@ interface Message {
   user_name: string | null;
 }
 
+interface TypingUser {
+  user_name: string;
+  timestamp: number;
+}
+
 const snd = new Snd();
 
 function App() {
@@ -31,7 +36,14 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const TYPING_TIMEOUT = 3000;
   const MESSAGES_PER_PAGE = 50;
+
+  // Typing status
+  const [typingUsers, setTypingUsers] = useState<Record<string, TypingUser>>(
+    {}
+  );
 
   // Notification settings
   const [isNotificationEnabled, setIsNotificationEnabled] = useState(
@@ -42,6 +54,43 @@ function App() {
     setIsNotificationEnabled(value);
     window.localStorage.setItem("isNotificationEnabled", value.toString());
   }
+
+  useEffect(() => {
+    if (!session) return;
+
+    const channel = supabase
+      .channel("typing")
+      .on("broadcast", { event: "typing" }, ({ payload }) => {
+        const { user_id, user_name } = payload;
+        setTypingUsers((prev) => ({
+          ...prev,
+          [user_id]: {
+            user_name,
+            timestamp: Date.now(),
+          },
+        }));
+      })
+      .subscribe();
+
+    // Clear old typing status periodically
+    const interval = setInterval(() => {
+      setTypingUsers((prev) => {
+        const now = Date.now();
+        const newTypingUsers = { ...prev };
+        Object.entries(newTypingUsers).forEach(([id, data]) => {
+          if (now - data.timestamp > TYPING_TIMEOUT) {
+            delete newTypingUsers[id];
+          }
+        });
+        return newTypingUsers;
+      });
+    }, 1000);
+
+    return () => {
+      supabase.removeChannel(channel);
+      clearInterval(interval);
+    };
+  }, [session]);
 
   useEffect(() => {
     snd.load(Snd.KITS.SND01);
@@ -178,6 +227,18 @@ function App() {
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
+  };
+
+  const handleTyping = () => {
+    if (!session) return;
+    supabase.channel("typing").send({
+      type: "broadcast",
+      event: "typing",
+      payload: {
+        user_id: session.user.id,
+        user_name: session.user.user_metadata.user_name,
+      },
+    });
   };
 
   return (
@@ -344,6 +405,20 @@ function App() {
             <div ref={messagesEndRef} />
           </div>
 
+          {/* Typing Users */}
+          {Object.keys(typingUsers).length > 0 && (
+            <div className="px-4 pb-2 text-sm text-gray-500 italic">
+              {Object.values(typingUsers)
+                .map((u) => u.user_name)
+                .filter(
+                  (name) => name !== session?.user.user_metadata.user_name
+                )
+                .join(", ")}
+              {Object.keys(typingUsers).length > 1 ? " are " : " is "}
+              typing...
+            </div>
+          )}
+
           {/* Template Messages */}
           {session && (
             <div
@@ -375,7 +450,10 @@ function App() {
               <input
                 type="text"
                 value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
+                onChange={(e) => {
+                  setNewMessage(e.target.value);
+                  handleTyping();
+                }}
                 placeholder={
                   session ? "Type your message..." : "Please login to chat"
                 }
