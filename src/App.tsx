@@ -173,7 +173,7 @@ function App() {
             {messages.map((message, index) => (
               <div
                 key={message.id}
-                className={`flex items-start space-x-3 mb-4 ${
+                className={`flex items-start space-x-3 ${
                   session?.user.id === message.user_id
                     ? "flex-row-reverse space-x-reverse"
                     : ""
