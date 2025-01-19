@@ -123,10 +123,10 @@ function App() {
   return (
     <div className="h-screen bg-gray-100 flex flex-col">
       <Toaster />
-      <div className="max-w-xl mx-auto p-4 flex-1 flex flex-col">
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden flex-1 flex flex-col">
+      <div className="max-w-xl w-full mx-auto p-4 flex-1 flex flex-col">
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden flex-1 flex flex-col w-full">
           {/* Header */}
-          <div className="bg-indigo-600 p-4 flex justify-between items-center">
+          <div className="bg-indigo-600 p-4 flex justify-between items-center w-full">
             <div className="flex items-center space-x-2">
               <MessageCircle className="text-white" fill="currentColor" />
               <h1 className="text-white text-xl font-bold">Message</h1>
@@ -158,7 +158,7 @@ function App() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4">
+          <div className="flex-1 overflow-y-auto p-4 w-full max-w-lg">
             {messages.map((message) => (
               <div
                 key={message.id}
