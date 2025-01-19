@@ -202,7 +202,9 @@ function App() {
                 )}
                 <div
                   className={`flex flex-col ${
-                    session?.user.id === message.user_id ? "items-end" : ""
+                    session?.user.id === message.user_id
+                      ? "items-end"
+                      : "items-start"
                   }`}
                 >
                   <div
