@@ -135,7 +135,9 @@ function App() {
           <div className="bg-indigo-600 p-4 flex justify-between items-center w-full">
             <div className="flex items-center space-x-2">
               <MessageCircle className="text-white" fill="currentColor" />
-              <h1 className="text-white text-xl font-bold">Message</h1>
+              <h1 className="text-white text-xl font-bold select-none">
+                Message
+              </h1>
             </div>
             <div className="flex items-center space-x-4">
               <button
