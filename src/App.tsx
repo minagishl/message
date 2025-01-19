@@ -171,7 +171,7 @@ function App() {
                 <img
                   src={message.user_avatar || "https://via.placeholder.com/40"}
                   alt="avatar"
-                  className="w-10 h-10 rounded-full"
+                  className="w-10 h-10 rounded-full select-none pointer-events-none"
                 />
                 <div
                   className={`flex flex-col ${
