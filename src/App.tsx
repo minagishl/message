@@ -29,8 +29,10 @@ function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const synth = window.speechSynthesis;
+  const MESSAGES_PER_PAGE = 50;
 
   useEffect(() => {
     snd.load(Snd.KITS.SND01);
@@ -64,6 +66,8 @@ function App() {
       }
 
       setMessages(data.reverse() || []);
+
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
     fetchMessages();
@@ -87,11 +91,7 @@ function App() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [isNotificationEnabled, synth]);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [isNotificationEnabled]);
 
   const handleLogin = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
@@ -124,6 +124,50 @@ function App() {
     }
 
     setNewMessage("");
+
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 300);
+  };
+
+  const fetchMessages = async (offset = 0) => {
+    setIsLoading(true);
+    const { data, error } = await supabase
+      .from("messages")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .range(offset, offset + MESSAGES_PER_PAGE - 1);
+
+    const messagesDiv = document.getElementById("messages");
+    // Scroll position saved as distance from bottom
+    const distanceFromBottom = messagesDiv
+      ? messagesDiv.scrollHeight - messagesDiv.scrollTop
+      : 0;
+
+    if (error) {
+      toast.error("Failed to fetch messages");
+      setIsLoading(false);
+      return;
+    }
+
+    if (data.length < MESSAGES_PER_PAGE) {
+      setHasMore(false);
+    }
+
+    if (offset === 0) {
+      setMessages(data.reverse() || []);
+    } else {
+      setMessages((prev) => [...data.reverse(), ...prev]);
+
+      // Scroll to the same position
+      if (messagesDiv) {
+        requestAnimationFrame(() => {
+          messagesDiv.scrollTop = messagesDiv.scrollHeight - distanceFromBottom;
+        });
+      }
+    }
+
+    setIsLoading(false);
   };
 
   return (
@@ -170,6 +214,18 @@ function App() {
             className="flex-1 overflow-y-scroll p-4 w-full sm:max-w-xl"
             id="messages"
           >
+            {hasMore && (
+              <div className="w-full flex justify-center">
+                <button
+                  onClick={() => fetchMessages(messages.length)}
+                  disabled={isLoading}
+                  className="py-2 px-6 mx-auto text-xs text-gray-500 hover:bg-gray-50 rounded-lg disabled:opacity-50"
+                >
+                  {isLoading ? "Loading..." : "Load past messages"}
+                </button>
+              </div>
+            )}
+
             {messages.map((message, index) => (
               <>
                 {/* Date */}
