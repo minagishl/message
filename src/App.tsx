@@ -175,79 +175,92 @@ function App() {
             id="messages"
           >
             {messages.map((message, index) => (
-              <div
-                key={message.id}
-                className={`flex items-start space-x-3 overflow-x-hidden ${
-                  session?.user.id === message.user_id
-                    ? "flex-row-reverse space-x-reverse"
-                    : ""
-                } ${
-                  messages[index + 1]?.user_id === message.user_id
-                    ? "mb-1"
-                    : "mb-4"
-                }`}
-              >
-                {/* Avatar */}
-                {messages[index - 1]?.user_id === message.user_id ? (
-                  <div className="size-10 flex-shrink-0" />
-                ) : (
-                  <div className="flex-shrink-0">
-                    <a
-                      href={`https://github.com/${message.user_name}`}
-                      target="_blank"
-                      className="cursor-pointer pointer-events-auto size-10"
-                    >
-                      <img
-                        src={
-                          message.user_avatar ||
-                          "https://via.placeholder.com/40"
-                        }
-                        alt="avatar"
-                        className="w-10 h-10 rounded-full select-none"
-                      />
-                    </a>
+              <>
+                {/* Date */}
+                {(index === 0 ||
+                  new Date(message.created_at).toLocaleDateString() !==
+                    new Date(
+                      messages[index - 1].created_at
+                    ).toLocaleDateString()) && (
+                  <div className="flex items-center justify-center text-xs text-gray-500 my-2 select-none">
+                    {new Date(message.created_at).toLocaleDateString()}
                   </div>
                 )}
 
-                {/* Label */}
                 <div
-                  className={`flex flex-col w-full ${
+                  key={message.id}
+                  className={`flex items-start space-x-3 overflow-x-hidden ${
                     session?.user.id === message.user_id
-                      ? "items-end"
-                      : "items-start"
+                      ? "flex-row-reverse space-x-reverse"
+                      : ""
+                  } ${
+                    messages[index + 1]?.user_id === message.user_id
+                      ? "mb-1"
+                      : "mb-4"
                   }`}
                 >
-                  <div
-                    className={`flex flex-row ${
-                      message.user_name !== "minagishl" && "flex-row-reverse"
-                    }`}
-                  >
-                    {messages[index - 1]?.user_id !== message.user_id && (
-                      <>
-                        <span className="text-sm text-gray-500">
-                          {message.user_name}
-                        </span>
-                        {message.user_name === "minagishl" && (
-                          <span className="text-xs bg-gray-100 rounded-full mx-1 my-auto px-1.5 py-0.5 text-center flex items-center">
-                            Admin
-                          </span>
-                        )}
-                      </>
-                    )}
-                  </div>
+                  {/* Avatar */}
+                  {messages[index - 1]?.user_id === message.user_id ? (
+                    <div className="size-10 flex-shrink-0" />
+                  ) : (
+                    <div className="flex-shrink-0">
+                      <a
+                        href={`https://github.com/${message.user_name}`}
+                        target="_blank"
+                        className="cursor-pointer pointer-events-auto size-10"
+                      >
+                        <img
+                          src={
+                            message.user_avatar ||
+                            "https://via.placeholder.com/40"
+                          }
+                          alt="avatar"
+                          className="w-10 h-10 rounded-full select-none"
+                        />
+                      </a>
+                    </div>
+                  )}
 
-                  {/* Content */}
+                  {/* Label */}
                   <div
-                    className={`mt-1 px-4 py-2 rounded-lg break-words max-w-[calc(100%-(2.5rem*2)-1.5rem)] ${
+                    className={`flex flex-col w-full ${
                       session?.user.id === message.user_id
-                        ? "bg-indigo-600 text-white"
-                        : "bg-gray-100"
+                        ? "items-end"
+                        : "items-start"
                     }`}
                   >
-                    {message.content}
+                    <div
+                      className={`flex flex-row ${
+                        message.user_name !== "minagishl" && "flex-row-reverse"
+                      }`}
+                    >
+                      {messages[index - 1]?.user_id !== message.user_id && (
+                        <>
+                          <span className="text-sm text-gray-500">
+                            {message.user_name}
+                          </span>
+                          {message.user_name === "minagishl" && (
+                            <span className="text-xs bg-gray-100 rounded-full mx-1 my-auto px-1.5 py-0.5 text-center flex items-center">
+                              Admin
+                            </span>
+                          )}
+                        </>
+                      )}
+                    </div>
+
+                    {/* Content */}
+                    <div
+                      className={`mt-1 px-4 py-2 rounded-lg break-words max-w-[calc(100%-(2.5rem*2)-1.5rem)] ${
+                        session?.user.id === message.user_id
+                          ? "bg-indigo-600 text-white"
+                          : "bg-gray-100"
+                      }`}
+                    >
+                      {message.content}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </>
             ))}
             <div ref={messagesEndRef} />
           </div>
