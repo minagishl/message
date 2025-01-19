@@ -178,7 +178,11 @@ function App() {
                     session?.user.id === message.user_id ? "items-end" : ""
                   }`}
                 >
-                  <div>
+                  <div
+                    className={`flex flex-row ${
+                      message.user_name !== "minagishl" && "flex-row-reverse"
+                    }`}
+                  >
                     <span className="text-sm text-gray-500">
                       {message.user_name}
                     </span>
