@@ -183,17 +183,25 @@ function App() {
                     : "mb-4"
                 }`}
               >
-                <img
-                  src={message.user_avatar || "https://via.placeholder.com/40"}
-                  alt="avatar"
-                  className="w-10 h-10 rounded-full select-none pointer-events-none"
-                  style={{
-                    opacity:
-                      messages[index - 1]?.user_id === message.user_id
-                        ? "0"
-                        : "1",
-                  }}
-                />
+                <a
+                  href={`https://github.com/${message.user_name}`}
+                  target="_blank"
+                  className="cursor-pointer pointer-events-auto"
+                >
+                  <img
+                    src={
+                      message.user_avatar || "https://via.placeholder.com/40"
+                    }
+                    alt="avatar"
+                    className="w-10 h-10 rounded-full select-none"
+                    style={{
+                      opacity:
+                        messages[index - 1]?.user_id === message.user_id
+                          ? "0"
+                          : "1",
+                    }}
+                  />
+                </a>
                 <div
                   className={`flex flex-col ${
                     session?.user.id === message.user_id ? "items-end" : ""
