@@ -50,7 +50,7 @@ function App() {
       const { data, error } = await supabase
         .from("messages")
         .select("*")
-        .order("created_at", { ascending: true })
+        .order("created_at", { ascending: false })
         .limit(50);
 
       if (error) {
@@ -58,7 +58,7 @@ function App() {
         return;
       }
 
-      setMessages(data || []);
+      setMessages(data.reverse() || []);
     };
 
     fetchMessages();
