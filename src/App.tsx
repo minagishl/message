@@ -177,7 +177,7 @@ function App() {
             {messages.map((message, index) => (
               <div
                 key={message.id}
-                className={`flex items-start space-x-3 ${
+                className={`flex items-start space-x-3 overflow-x-hidden ${
                   session?.user.id === message.user_id
                     ? "flex-row-reverse space-x-reverse"
                     : ""
@@ -187,6 +187,7 @@ function App() {
                     : "mb-4"
                 }`}
               >
+                {/* Avatar */}
                 {messages[index - 1]?.user_id === message.user_id ? (
                   <div className="size-10 flex-shrink-0" />
                 ) : (
@@ -207,8 +208,10 @@ function App() {
                     </a>
                   </div>
                 )}
+
+                {/* Label */}
                 <div
-                  className={`flex flex-col ${
+                  className={`flex flex-col w-full ${
                     session?.user.id === message.user_id
                       ? "items-end"
                       : "items-start"
@@ -232,8 +235,10 @@ function App() {
                       </>
                     )}
                   </div>
+
+                  {/* Content */}
                   <div
-                    className={`mt-1 px-4 py-2 rounded-lg break-words ${
+                    className={`mt-1 px-4 py-2 rounded-lg break-words max-w-[calc(100%-(2.5rem*2)-1.5rem)] ${
                       session?.user.id === message.user_id
                         ? "bg-indigo-600 text-white"
                         : "bg-gray-100"
