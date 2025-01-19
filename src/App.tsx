@@ -28,11 +28,20 @@ function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const MESSAGES_PER_PAGE = 50;
+
+  // Notification settings
+  const [isNotificationEnabled, setIsNotificationEnabled] = useState(
+    window.localStorage.getItem("isNotificationEnabled") === "true" || false
+  );
+
+  function setNotificationEnabled(value: boolean) {
+    setIsNotificationEnabled(value);
+    window.localStorage.setItem("isNotificationEnabled", value.toString());
+  }
 
   useEffect(() => {
     snd.load(Snd.KITS.SND01);
@@ -185,7 +194,7 @@ function App() {
             </div>
             <div className="flex items-center space-x-4">
               <button
-                onClick={() => setIsNotificationEnabled(!isNotificationEnabled)}
+                onClick={() => setNotificationEnabled(!isNotificationEnabled)}
                 className="text-white hover:text-indigo-200"
               >
                 {isNotificationEnabled ? <Volume2 /> : <VolumeX />}
