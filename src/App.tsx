@@ -129,7 +129,7 @@ function App() {
   return (
     <div className="h-screen bg-gray-100 flex flex-col">
       <Toaster />
-      <div className="max-w-xl w-full mx-auto max-h-screen sm:p-4 flex-1 flex flex-col">
+      <div className="sm:max-w-xl w-full mx-auto max-h-screen sm:p-4 flex-1 flex flex-col">
         <div className="bg-white sm:rounded-lg shadow-lg overflow-hidden flex-1 flex flex-col w-full">
           {/* Header */}
           <div className="bg-indigo-600 p-4 flex justify-between items-center w-full">
@@ -167,7 +167,7 @@ function App() {
 
           {/* Messages */}
           <div
-            className="flex-1 overflow-y-scroll p-4 w-full max-w-xl"
+            className="flex-1 overflow-y-scroll p-4 w-full sm:max-w-xl"
             id="messages"
           >
             {messages.map((message, index) => (
