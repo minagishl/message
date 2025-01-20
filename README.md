@@ -1,6 +1,6 @@
 # Message
 
-> **Note**: This application processes everything on the client side, making it easy to spoof.  
+> **Note:** This application processes everything on the client side, making it easy to spoof.  
 > Please review the code for reference purposes only.
 
 This project is a fast and secure application using TypeScript and Vite, with login and real-time chat using Supabase
